@@ -1,3 +1,4 @@
+import 'package:capstone_parking_lot/helper/services.dart';
 import 'package:capstone_parking_lot/ui/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,9 @@ class SmartParking extends StatelessWidget {
         ),
         ChangeNotifierProvider<UserBloc>(
           create: (context) => UserBloc(),
+        ),
+        ChangeNotifierProvider<ParkingServiceBloc>(
+          create: (context) => ParkingServiceBloc(),
         ),
       ],
       child: LayoutBuilder(

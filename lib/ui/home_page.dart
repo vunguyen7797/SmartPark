@@ -1,13 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone_parking_lot/blocs/user_bloc.dart';
 import 'package:capstone_parking_lot/helper/constants.dart';
+import 'package:capstone_parking_lot/helper/services.dart';
 import 'package:capstone_parking_lot/helper/size_config.dart';
 import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    Future.delayed(Duration(seconds: 0),(){
+      var service = ParkingServiceBloc();
+      service.getParkingInfo();
+    });
+    super.initState();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final userBloc = Provider.of<UserBloc>(context);
@@ -161,6 +179,8 @@ class HomePage extends StatelessWidget {
   }
 
   _buildAvailableParkingSpaceList(context) {
+    final pb = Provider.of<ParkingServiceBloc>(context);
+
     return Padding(
       padding: EdgeInsets.only(bottom: 50, left: 20, right: 20, top: 30),
       child: Column(
@@ -183,7 +203,7 @@ class HomePage extends StatelessWidget {
               removeTop: true,
               child: ListView.builder(
                   physics: ClampingScrollPhysics(),
-                  itemCount: 10,
+                  itemCount: pb.parkingSpaces.length,
                   itemBuilder: (BuildContext context, index) {
                     return Padding(
                       padding: EdgeInsets.symmetric(
@@ -192,14 +212,8 @@ class HomePage extends StatelessWidget {
                         padding: EdgeInsets.all(15),
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.blueGrey.withOpacity(0.1),
-                                  offset: Offset(5, 10),
-                                  blurRadius: 15,
-                                  spreadRadius: 6)
-                            ],
+                            color: Colors.grey.withOpacity(0.1),
+
                             borderRadius: BorderRadius.circular(15)),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
@@ -211,7 +225,7 @@ class HomePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Slot C-$index',
+                                    'Slot ${pb.parkingSpaces[index].name}',
                                     style: GoogleFonts.rubik(
                                         color: Colors.black,
                                         fontSize: 2 * SizeConfig.textMultiplier,
@@ -221,7 +235,7 @@ class HomePage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    'Arkansas State University Library',
+                                    '${pb.parkingSpaces[index].location}',
                                     style: GoogleFonts.rubik(
                                       color: Colors.grey,
                                       fontSize: 1.5 * SizeConfig.textMultiplier,
@@ -231,9 +245,9 @@ class HomePage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    'AVAILABLE',
+                                    pb.parkingSpaces[index].status ? 'AVAILABLE' : 'OCCUPIED',
                                     style: GoogleFonts.rubik(
-                                      color: Colors.green,
+                                      color:   pb.parkingSpaces[index].status ? Colors.green : ColorPalette.PrimaryColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 2.5 * SizeConfig.textMultiplier,
                                     ),
@@ -241,7 +255,7 @@ class HomePage extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(
-                                width: 5 * SizeConfig.widthMultiplier,
+                                width: 9 * SizeConfig.widthMultiplier,
                               ),
                               Expanded(
                                 child: Container(
@@ -252,7 +266,7 @@ class HomePage extends StatelessWidget {
                                       color: ColorPalette.PrimaryColor,
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Text(
-                                    'Reserve Now',
+                                    pb.parkingSpaces[index].reservedStatus ? 'Reserved' : 'Reserve Now',
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.rubik(
                                       color: Colors.white,
