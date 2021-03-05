@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "101405760382",
+    "project_id": "astate-smart-parking-lot",
+    "storage_bucket": "astate-smart-parking-lot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101405760382:android:31e2278e17c50bf3b8712f",
+        "android_client_info": {
+          "package_name": "com.astate.capstone_parking_lot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101405760382-n1nrb41tqnfm4cmmndf3342lqig6c0f0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_g5pXZCx4jKGOQXoDuYfCcQvKXnM0BVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101405760382-n1nrb41tqnfm4cmmndf3342lqig6c0f0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "101405760382-o1o0e3hhmnlhbqi65ulm7umlo5cf1uc8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.astate.capstoneparkinglot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
