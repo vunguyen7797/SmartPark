@@ -2,6 +2,7 @@ import 'package:capstone_parking_lot/helper/services.dart';
 import 'package:capstone_parking_lot/ui/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_socket_channel/io.dart';
 
 import 'blocs/auth_bloc.dart';
 import 'blocs/user_bloc.dart';

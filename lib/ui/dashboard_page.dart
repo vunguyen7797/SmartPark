@@ -11,7 +11,13 @@ import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'mapview_page.dart';
+
 class DashboardPage extends StatefulWidget {
+  final plName;
+  final plId;
+
+  const DashboardPage({Key key, this.plName, this.plId}) : super(key: key);
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
@@ -21,10 +27,11 @@ class _DashboardPageState extends State<DashboardPage> {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   String _deviceInfo = "";
 
-  final List<Widget> _childrenPages = [HomePage(), SettingPage()];
+   List<Widget> _childrenPages;
 
   @override
   void initState() {
+    _childrenPages = [HomePage(plName: widget.plName, plId: widget.plId), MapViewPage(), SettingPage()];
     Future.delayed(Duration(milliseconds: 0), () async {
       final userBloc = Provider.of<UserBloc>(context);
       userBloc.getUserFirestore();
@@ -73,6 +80,13 @@ class _DashboardPageState extends State<DashboardPage> {
                 size: 3.5 * SizeConfig.textMultiplier),
             activeColor:
                 ColorPalette.PrimaryColor, //ColorPalette.SecondaryColor,
+          ),
+          BottomNavyBarCustomItem(
+            inactiveColor: Colors.grey,
+            icon: Icon(FlevaIcons.map_outline,
+                size: 3.5 * SizeConfig.textMultiplier),
+            activeColor:
+            ColorPalette.PrimaryColor, //ColorPalette.SecondaryColor,
           ),
           BottomNavyBarCustomItem(
             inactiveColor: Colors.grey,

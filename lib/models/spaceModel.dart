@@ -9,10 +9,10 @@ class ParkingSpace {
 
   factory ParkingSpace.fromMap(Map<String, dynamic> data){
     return ParkingSpace(
-      name: data['Name'],
-      location: data['Location'],
-      status: data['Status'] == "True" ? true : false,
-      reservedStatus: data['Reserve_status']== "True" ? true : false
+      name: data['name'],
+      location: data['location'],
+      status: data['status'] == 1 ? true : false,
+      reservedStatus: data['reserve_status']== 1 ? false : true
     );
   }
 

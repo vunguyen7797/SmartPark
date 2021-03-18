@@ -190,10 +190,19 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 7 * SizeConfig.heightMultiplier,
+                      height: 1 * SizeConfig.heightMultiplier,
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: Icon(FlevaIcons.arrow_ios_back, size: 3 * SizeConfig.textMultiplier, color: Colors.black,),
+                    ),
+                    SizedBox(
+                      height: 4* SizeConfig.heightMultiplier,
                     ),
                     Container(
-                      child: Text('SmartParking',
+                      child: Text('SmartPark',
                           style: GoogleFonts.rubik(
                             fontWeight: FontWeight.bold,
                             color: ColorPalette.PrimaryColor,
@@ -209,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                     ),
                     SizedBox(
-                      height: 7 * SizeConfig.heightMultiplier,
+                      height: 3 * SizeConfig.heightMultiplier,
                     ),
                     Center(
                       child: Text(

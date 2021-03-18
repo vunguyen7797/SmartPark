@@ -33,6 +33,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userBloc = Provider.of<UserBloc>(context);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -65,7 +66,7 @@ class _SettingPageState extends State<SettingPage> {
                 ListTile(
                   onTap: () {
                     final authBloc = Provider.of<AuthBloc>(context);
-                    if (!authBloc.isSignedIn)
+                    if (!authBloc.isSignedIn || userBloc.uid == "" || userBloc.uid == null)
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LoginPage()));
                   },

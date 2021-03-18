@@ -9,14 +9,12 @@ class ParkingServiceBloc with ChangeNotifier{
    List<ParkingSpace> get parkingSpaces => _parkingSpaces;
   set  parkingSpaces(newVal) => _parkingSpaces = newVal;
 
-  ParkingServiceBloc(){
-    getParkingInfo();
-  }
 
-  Future<void> getParkingInfo() async {
+
+  Future<void> getParkingInfo(plId) async {
     var client = http.Client();
-    var url = 'http://192.168.0.2:8080/data';
-
+    var url = 'http://localhost:8080/data';
+    _parkingSpaces.clear();
     var response = await client.get(url);
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
