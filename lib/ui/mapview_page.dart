@@ -1,401 +1,106 @@
+import 'dart:math';
+
 import 'package:capstone_parking_lot/helper/constants.dart';
 import 'package:capstone_parking_lot/helper/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MapViewPage extends StatelessWidget {
+  // @override
+  // Widget build(BuildContext context) {
+  //   return new Scaffold(
+  //       backgroundColor: Colors.white,
+  //       body: _createStack()
+  //   );
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        extendBody: true,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 2 * SizeConfig.heightMultiplier,),
-              Text('Map View', style: GoogleFonts.rubik(
-                color: ColorPalette.PrimaryColor,
-                fontSize:3 * SizeConfig.textMultiplier,
-                fontWeight: FontWeight.w500,
-              ), ),
-              SizedBox(height: 3 * SizeConfig.heightMultiplier,),
-              Container(
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+    return MaterialApp(
+      home: Scaffold(
+        body: SpaceWidget(),
+      ),
+    );
+  }
+}
 
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                            color: ColorPalette.PrimaryColor,
-                            border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: RotatedBox(
-                                quarterTurns: 1,
-                                child: Image.asset('res/images/PngItem_5112270.png'),
-                              ),
-                            )
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+class SpaceWidget extends StatelessWidget {
+  SpaceWidget({Key key}) : super(key: key);
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-3',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-4',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-          height: 10 * SizeConfig.heightMultiplier,
-          width: MediaQuery.of(context).size.width/3,
-
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-              color: Colors.blue,
-              border: Border.all(color: Colors.black)
-          ),
-          child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Image.asset('res/images/PngItem_5112270.png'),
-                ),
-              )
-          ),
-        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-6',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-7',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-          height: 10 * SizeConfig.heightMultiplier,
-          width: MediaQuery.of(context).size.width/3,
-
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-              color: ColorPalette.PrimaryColor,
-              border: Border.all(color: Colors.black)
-          ),
-          child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Image.asset('res/images/PngItem_5112270.png'),
-                ),
-              )
-          ),
-        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-9',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        ),
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        ),
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        ),
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-11',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ),  Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ),  Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ),  Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-16',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-17',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-18',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
+  @override
+  Widget build(BuildContext context) {
+    // double alignX = 0;
+    // double alignY = 0;
+    // double spaceAngle = 0;
+    // bool occupied = true;
+    // for (int i = 0; i < 2; i++){
+    //   if (i == 1){
+    //     alignX = 1;
+    //     alignY = 1;
+    //   }
+    return Center(
+      child: InteractiveViewer(
+        boundaryMargin: const EdgeInsets.all(double.infinity),
+        minScale: 0.1,
+        maxScale: 2.5,
+        child:
+        Transform.rotate(
+          angle: 0,
+          alignment: Alignment(0.0, 0.0),
+          child: new Container(
+            height: 30.0,
+            width: 50.0,
+            child: new DecoratedBox(
+              decoration: new BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.red, Colors.cyan]
+                  )
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+// _createStack() {
+//   return new Stack(
+//       children: <Widget>[
+//         // Black square centered in stack
+//         new Align(
+//           alignment: new Alignment(2328, 1647),
+//           child: new Container(
+//             height: 30.0,
+//             width: 50.0,
+//             child: new DecoratedBox(
+//               decoration: new BoxDecoration(
+//                   color: Colors.red
+//               ),
+//             ),
+//           ),
+//         ),
+//         new Align(
+//           // alignment: Alignment.topLeft,
+//           alignment: const Alignment(-1.0, -1.0),
+//           child: new Text('Top Left',
+//               style: new TextStyle(color: Colors.black)),
+//         ),
+//         new Align(
+//           // alignment: Alignment.bottomRight,
+//           alignment: const Alignment(1.0, 1.0),
+//           child: new Text('Bottom Right',
+//               style: new TextStyle(color: Colors.black)),
+//         ),
+//         new Align(
+//           alignment: new Alignment(-0.8, -0.8),
+//           child: new Text(
+//               '10% in', style: new TextStyle(color: Colors.black)),
+//         ),
+//         new Align(
+//           alignment: new Alignment(0.8, 0.8),
+//           child: new Text(
+//               '90% in', style: new TextStyle(color: Colors.black)),
+//         ),
+//       ]
+//   );
+// }
