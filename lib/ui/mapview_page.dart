@@ -7,14 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:developer';
 
 class MapViewPage extends StatelessWidget {
-  // @override
-  // Widget build(BuildContext context) {
-  //   return new Scaffold(
-  //       backgroundColor: Colors.white,
-  //       body: _createStack()
-  //   );
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,7 +54,7 @@ class _SpaceWidgetState extends State<SpaceWidget> {
         child: Transform(
           transform: Matrix4.translationValues(x, y, 0.0),
           child: Container(
-            color: Colors.red,
+            color: Colors.white,
             child: Stack(
               overflow: Overflow.clip,
               children: <Widget>[
@@ -171,6 +163,20 @@ class _SpaceWidgetState extends State<SpaceWidget> {
                   height: 60.0,
                   width: 88.0,
                   child: buildParkingSpaceWidget(90 * 3.1415927 / 180),),
+                Positioned(
+                  left: -14,
+                  top: 218,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(90 * 3.1415927 / 180),),
+                Positioned(
+                  left: -14,
+                  top: 306,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(90 * 3.1415927 / 180),),
+
+                  //Unedited parking spaces (so far)
                   Positioned(
                     left: 1438,
                     top: 791,
@@ -244,113 +250,10 @@ class _SpaceWidgetState extends State<SpaceWidget> {
       angle: angle,
         child: new DecoratedBox(
           decoration: new BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.black, Colors.cyan]
-              )
+                  color: Colors.green,
+            border: Border.all(color: Colors.black)
           ),
         ),
     );
   }
 }
-
-// _createStack() {
-//   return new Stack(
-//       children: <Widget>[
-//         // Black square centered in stack
-//         new Align(
-//           alignment: new Alignment(2328, 1647),
-//           child: new Container(
-//             height: 30.0,
-//             width: 50.0,
-//             child: new DecoratedBox(
-//               decoration: new BoxDecoration(
-//                   color: Colors.red
-//               ),
-//             ),
-//           ),
-//         ),
-//         new Align(
-//           // alignment: Alignment.topLeft,
-//           alignment: const Alignment(-1.0, -1.0),
-//           child: new Text('Top Left',
-//               style: new TextStyle(color: Colors.black)),
-//         ),
-//         new Align(
-//           // alignment: Alignment.bottomRight,
-//           alignment: const Alignment(1.0, 1.0),
-//           child: new Text('Bottom Right',
-//               style: new TextStyle(color: Colors.black)),
-//         ),
-//         new Align(
-//           alignment: new Alignment(-0.8, -0.8),
-//           child: new Text(
-//               '10% in', style: new TextStyle(color: Colors.black)),
-//         ),
-//         new Align(
-//           alignment: new Alignment(0.8, 0.8),
-//           child: new Text(
-//               '90% in', style: new TextStyle(color: Colors.black)),
-//         ),
-//       ]
-//   );
-// }
-
-
-// class MapViewPage extends StatelessWidget {
-//   // @override
-//   // Widget build(BuildContext context) {
-//   //   return new Scaffold(
-//   //       backgroundColor: Colors.white,
-//   //       body: _createStack()
-//   //   );
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         body: SpaceWidget(),
-//       ),
-//     );
-//   }
-// }
-//
-// class SpaceWidget extends StatelessWidget {
-//   SpaceWidget({Key key}) : super(key: key);
-//
-//   final testMap = [{"1": 1}, {"0.5": 0.5}, {"0.9": 0.9}, {"-0.5": -0.5}, {"-1": -1}];
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: double.infinity,
-//       color: Colors.red,
-//       child: Stack(
-//         children: <Widget>[
-//           buildParkingSpaceWidget(0.0, 0.0),
-//           for (int i = 0; i < testMap.length; i++)
-//             Positioned(
-//               top: (i).toDouble(),
-//               left: (i).toDouble(),
-//               child: buildParkingSpaceWidget(1.0, 1.0))
-//         ],
-//       ),
-//     );
-//   }
-// }
-//
-//   buildParkingSpaceWidget(align1, align2){
-//     return  Transform.rotate(
-//       angle: 0,
-//       alignment: Alignment(0.0, 0.0),
-//       child: new Container(
-//         height: 30.0,
-//         width: 50.0,
-//         child: new DecoratedBox(
-//           decoration: new BoxDecoration(
-//               gradient: LinearGradient(
-//                   colors: [Colors.red, Colors.cyan]
-//               )
-//           ),
-//         ),
-//       ),
-//     );
-//   }
