@@ -3,10 +3,13 @@ import 'package:capstone_parking_lot/blocs/user_bloc.dart';
 import 'package:capstone_parking_lot/helper/constants.dart';
 import 'package:capstone_parking_lot/helper/size_config.dart';
 import 'package:capstone_parking_lot/ui/login_page.dart';
+import 'package:capstone_parking_lot/ui/parking_lot_page.dart';
+import 'package:capstone_parking_lot/ui/reserve_page.dart';
 import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -95,6 +98,136 @@ class _SettingPageState extends State<SettingPage> {
                     size: 3 * SizeConfig.textMultiplier,
                   ),
                 ),
+                SizedBox(
+                  height: 3 * SizeConfig.heightMultiplier,
+                ),
+
+                ListTile(
+                  onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ReservePage()));
+                  },
+                  leading: Container(
+                    height: 35,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.black,
+                    ),
+                    child: Icon(
+                      FlevaIcons.book,
+                      color: Colors.white,
+                      size: 2 * SizeConfig.textMultiplier,
+                    ),
+                  ),
+                  title: Text(
+                    'My Reservations',
+                    style: GoogleFonts.rubik(
+                        color: Colors.black,
+                        fontSize: 2 * SizeConfig.textMultiplier),
+                  ),
+                  trailing: Icon(
+                    FlevaIcons.arrow_ios_forward,
+                    color: Colors.black,
+                    size: 3 * SizeConfig.textMultiplier,
+                  ),
+                ),
+                SizedBox(
+                  height: 3 * SizeConfig.heightMultiplier,
+                ),
+                ListTile(
+                  onTap: () async {
+                    await launch('https://www.freeprivacypolicy.com/live/5a1efb7b-e2d0-4f2f-9dde-4437c6e07c6a');
+                  },
+                  leading: Container(
+                    height: 35,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.black,
+                    ),
+                    child: Icon(
+                      FlevaIcons.lock,
+                      color: Colors.white,
+                      size: 2 * SizeConfig.textMultiplier,
+                    ),
+                  ),
+                  title: Text(
+                    'Privacy Policy',
+                    style: GoogleFonts.rubik(
+                        color: Colors.black,
+                        fontSize: 2 * SizeConfig.textMultiplier),
+                  ),
+                  trailing: Icon(
+                    FlevaIcons.arrow_ios_forward,
+                    color: Colors.black,
+                    size: 3 * SizeConfig.textMultiplier,
+                  ),
+                ),
+                SizedBox(
+                  height: 3 * SizeConfig.heightMultiplier,
+                ),
+                ListTile(
+                  onTap: () {
+
+                  },
+                  leading: Container(
+                    height: 35,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.black,
+                    ),
+                    child: Icon(
+                      FlevaIcons.email,
+                      color: Colors.white,
+                      size: 2 * SizeConfig.textMultiplier,
+                    ),
+                  ),
+                  title: Text(
+                    'Contact Us',
+                    style: GoogleFonts.rubik(
+                        color: Colors.black,
+                        fontSize: 2 * SizeConfig.textMultiplier),
+                  ),
+                  trailing: Icon(
+                    FlevaIcons.arrow_ios_forward,
+                    color: Colors.black,
+                    size: 3 * SizeConfig.textMultiplier,
+                  ),
+                ),
+                SizedBox(
+                  height: 3 * SizeConfig.heightMultiplier,
+                ),
+                ListTile(
+                  onTap: () {
+
+                  },
+                  leading: Container(
+                    height: 35,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.black,
+                    ),
+                    child: Icon(
+                      FlevaIcons.info,
+                      color: Colors.white,
+                      size: 2 * SizeConfig.textMultiplier,
+                    ),
+                  ),
+                  title: Text(
+                    'About Us',
+                    style: GoogleFonts.rubik(
+                        color: Colors.black,
+                        fontSize: 2 * SizeConfig.textMultiplier),
+                  ),
+                  trailing: Icon(
+                    FlevaIcons.arrow_ios_forward,
+                    color: Colors.black,
+                    size: 3 * SizeConfig.textMultiplier,
+                  ),
+                ),
+
               ],
             ),
           ),
@@ -117,7 +250,7 @@ class _SettingPageState extends State<SettingPage> {
             final authBloc = Provider.of<AuthBloc>(context);
             await authBloc.signOut().then((value) {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+                  MaterialPageRoute(builder: (context) => ParkingLotPage()));
             });
           },
           child: Icon(

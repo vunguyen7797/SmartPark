@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserBloc extends ChangeNotifier {
@@ -19,25 +20,11 @@ class UserBloc extends ChangeNotifier {
   String get photoUrl => _photoUrl;
   set setPhotoUrl(newPhotoUrl) => _photoUrl = newPhotoUrl;
 
-  String _bio;
-  String get bio => _bio;
-  set setBio(newBio) => _bio = newBio;
-
-  String _location;
-  String get location => _location;
-  set setLocation(newLocation) => _location = newLocation;
-
-  String _position;
-  String get position => _position;
-  set setPosition(newPosition) => _position = newPosition;
-
-  String _organization;
-  String get organization => _organization;
-  set setOrganization(newOrganization) => _organization = newOrganization;
-
-  List _interests = [];
-  List get interests => _interests;
-  set setInterests(newInterests) => _interests = newInterests;
+  List _reservedList = [];
+  set reservedList(newValue) => _reservedList = newValue;
+  List get reservedList => _reservedList;
+  
+  
 
   UserBloc() {
     getUserFirestore();
@@ -56,16 +43,63 @@ class UserBloc extends ChangeNotifier {
         _name = snap.data['displayName'];
         _email = snap.data['email'];
         _photoUrl = snap.data['photoUrl'];
-        _interests = List.from(snap.data['interests']);
-        _location = snap.data['location'];
-        _organization = snap.data['organization'];
-        _bio = snap.data['bio'];
-        _position = snap.data['position'];
+
       });
     } catch (e) {
       print(e);
     }
 
+    notifyListeners();
+  }
+
+  void addToUserReserve(slotId) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String _uid = sp.getString('uid');
+    final DocumentReference ref =
+    Firestore.instance.collection('users').document(_uid);
+
+    String timestamp = await _getDate();
+    List firstItem = [slotId];
+
+    if (_reservedList == null) {
+      ref.updateData({'reservedList': FieldValue.arrayUnion(firstItem)});
+    } else {
+      _reservedList.add(slotId);
+      ref.updateData(
+          {'reservedList': FieldValue.arrayUnion(_reservedList)});
+    }
+    notifyListeners();
+  }
+
+  Future _getDate() async {
+    DateTime now = DateTime.now();
+    String _date = DateFormat('dd MMMM yyyy').format(now);
+    String _timestamp = DateFormat('yyyyMMddHHmmss').format(now);
+
+    return _timestamp;
+  }
+
+  Future getReservedList() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    String _uid = localStorage.getString('uid');
+
+    final DocumentReference ref =
+    Firestore.instance.collection('users').document(_uid);
+    DocumentSnapshot snap = await ref.get();
+    List d = snap.data['reservedList'];
+    _reservedList = d;
+
+    notifyListeners();
+  }
+
+  void removeFromReservedList(spaceId) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String _uid = sp.getString('uid');
+    final DocumentReference ref =
+    Firestore.instance.collection('users').document(_uid);
+    List d = [spaceId];
+    ref.updateData({'reservedList': FieldValue.arrayRemove(d)});
+    getReservedList();
     notifyListeners();
   }
 }

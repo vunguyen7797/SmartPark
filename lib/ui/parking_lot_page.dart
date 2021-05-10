@@ -25,7 +25,7 @@ class ParkingLotPage extends StatelessWidget {
               GestureDetector(
                 onTap: () async {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.setString('plName', 'Arkansas State University Library');
+                  await prefs.setString('plName', 'Arkansas State University Library');
                   Navigator.push(context, MaterialPageRoute(builder: (context)=> DashboardPage(plName: 'Arkansas State University Library', plId: '1')));
                 },
                 child: Padding(

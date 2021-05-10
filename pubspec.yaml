@@ -45,6 +45,10 @@ dependencies:
   cloud_firestore: ^0.13.7
   http: ^0.12.2
   web_socket_channel: ^1.2.0
+  url_launcher: ^5.7.10
+  intl: ^0.16.1
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

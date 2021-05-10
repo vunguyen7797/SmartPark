@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9d01a071-4f3d-4ba0-9e53-a3d26a38f456" name="Default Changelist" comment="New update">
+      <change afterPath="$PROJECT_DIR$/lib/ui/reserve_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/blocs/user_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/blocs/user_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/helper/services.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/helper/services.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/spaceModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/spaceModel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/dashboard_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/dashboard_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/login_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/mapview_page.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/parking_lot_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/parking_lot_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/setting_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/setting_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="jaggerharness" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1pnegfMrmLbvqWMBbYykieLjyO3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="settings.editor.selected.configurable" value="flutter.settings" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/ui" />
+      <recent name="$PROJECT_DIR$/res/images" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9d01a071-4f3d-4ba0-9e53-a3d26a38f456" name="Default Changelist" comment="" />
+      <created>1615823394007</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1615823394007</updated>
+    </task>
+    <task id="LOCAL-00001" summary="New update">
+      <created>1616029123094</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1616029123094</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="New update" />
+    <option name="LAST_COMMIT_MESSAGE" value="New update" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2599" y="324" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1617929781005">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state x="2599" y="324" key="#com.intellij.fileTypes.FileTypeChooser/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1617929781005" />
+    <state x="654" y="283" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1620194181932">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state x="654" y="283" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1620194181932" />
+    <state width="1193" height="544" key="GridCell.Tab.0.bottom" timestamp="1620252357065">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state width="1193" height="544" key="GridCell.Tab.0.bottom/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1620252357065" />
+    <state width="1193" height="544" key="GridCell.Tab.0.center" timestamp="1620252357064">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state width="1193" height="544" key="GridCell.Tab.0.center/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1620252357064" />
+    <state width="1193" height="544" key="GridCell.Tab.0.left" timestamp="1620252357064">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state width="1193" height="544" key="GridCell.Tab.0.left/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1620252357064" />
+    <state width="1193" height="544" key="GridCell.Tab.0.right" timestamp="1620252357065">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state width="1193" height="544" key="GridCell.Tab.0.right/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1620252357065" />
+    <state x="376" y="176" key="SettingsEditor" timestamp="1617981186863">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state x="376" y="176" key="SettingsEditor/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1617981186863" />
+    <state x="2139" y="279" key="Vcs.Push.Dialog.v2" timestamp="1616029141720">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state x="2139" y="279" key="Vcs.Push.Dialog.v2/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1616029141720" />
+    <state x="2596" y="235" key="git4idea.branch.GitSmartOperationDialog" timestamp="1617979482793">
+      <screen x="0" y="25" width="3840" height="1055" />
+    </state>
+    <state x="2596" y="235" key="git4idea.branch.GitSmartOperationDialog/3840.-953.1080.2535/0.25.3840.1055@0.25.3840.1055" timestamp="1617979482793" />
+  </component>
+</project>

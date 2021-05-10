@@ -11,8 +11,8 @@ class ParkingSpace {
     return ParkingSpace(
       name: data['name'],
       location: data['location'],
-      status: data['status'] == 1 ? true : false,
-      reservedStatus: data['reserve_status']== 1 ? false : true
+      status: data['status'] == "true" ? true : false,
+      reservedStatus: data['reserve_status']== "0" ? true : false
     );
   }
 

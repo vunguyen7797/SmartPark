@@ -11,6 +11,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dashboard_page.dart';
 
@@ -112,14 +113,15 @@ class _LoginPageState extends State<LoginPage> {
         _isNotSuccess = true;
       });
     } else {
-      authBloc.userExistCheck().then((value) {
+      authBloc.userExistCheck().then((value) async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
         if (authBloc.userExists) {
           authBloc.setUidToLocalStorage().then((value) => authBloc
               .setSignInStatus()
               .then((value) => Navigator.push(
                   context,
                   PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => DashboardPage()))));
+                      pageBuilder: (_, __, ___) => DashboardPage(plName: prefs.getString('plName'), plId: prefs.getString('plId'))))));
           if (mounted)
             setState(() {
               _showSpinner = false;
@@ -193,8 +195,9 @@ class _LoginPageState extends State<LoginPage> {
                       height: 1 * SizeConfig.heightMultiplier,
                     ),
                     GestureDetector(
-                      onTap: (){
-                        Navigator.pop(context);
+                      onTap: () async{
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DashboardPage(plName: prefs.getString('plName'), plId: prefs.getString('plId'))));
                       },
                       child: Icon(FlevaIcons.arrow_ios_back, size: 3 * SizeConfig.textMultiplier, color: Colors.black,),
                     ),

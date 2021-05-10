@@ -10,6 +10,7 @@ import 'package:device_info/device_info.dart';
 import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_socket_channel/io.dart';
 
 import 'mapview_page.dart';
 
@@ -31,7 +32,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   void initState() {
-    _childrenPages = [HomePage(plName: widget.plName, plId: widget.plId), MapViewPage(), SettingPage()];
+    _childrenPages = [HomePage(plName: widget.plName, plId: widget.plId, channel: IOWebSocketChannel.connect(Uri.parse('ws://localhost:8080/data'),  headers: {'Connection': 'upgrade', 'Upgrade': 'websocket'}),), MapViewPage(), SettingPage()];
     Future.delayed(Duration(milliseconds: 0), () async {
       final userBloc = Provider.of<UserBloc>(context);
       userBloc.getUserFirestore();

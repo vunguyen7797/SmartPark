@@ -17,38 +17,44 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-
+import 'package:web_socket_channel/status.dart' as status;
 class HomePage extends StatefulWidget {
   final plName;
   final plId;
+  final WebSocketChannel channel;
 
-  const HomePage({Key key, this.plName, this.plId}) : super(key: key);
+
+  const HomePage({Key key, this.plName, this.plId, this.channel}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
 
-  final WebSocketChannel channel = IOWebSocketChannel.connect('ws://localhost:8080/data',  headers: {'Connection': 'upgrade', 'Upgrade': 'websocket'});
-
+  SharedPreferences localDb;
   @override
   void initState() {
 
-
-
-
     Future.delayed(Duration(seconds: 0),() async {
-
+   localDb =  await  SharedPreferences.getInstance();
       final parkingBloc = Provider.of<ParkingServiceBloc>(context);
-      parkingBloc.getParkingInfo(widget.plId);
+     //parkingBloc.getParkingInfo(widget.plId);
+     // parkingBloc.getParkingInfo(widget.plId);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.channel.sink.close();
+    super.dispose();
   }
 
 
 
   @override
   Widget build(BuildContext context) {
+
     final userBloc = Provider.of<UserBloc>(context);
     return Scaffold(
       body: Container(
@@ -69,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    userBloc.photoUrl == null
+                    localDb?.getString('photoUrl') == null
                         ? Container(
                             height: 50,
                             width: 50,
@@ -142,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>ParkingLotPage()));
                       },
                       child: Text(
-                        widget.plName,
+                        widget.plName ?? '',
                         style: GoogleFonts.rubik(),
                       ),
                     ),
@@ -227,109 +233,292 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: MediaQuery.removePadding(
-              context: context,
-              removeTop: true,
-              child:StreamBuilder(
-                stream: channel.stream,
-                builder:(context, snapshot){
-                  print(snapshot);
-                  return  ListView.builder(
-                      physics: ClampingScrollPhysics(),
-                      itemCount: pb.parkingSpaces.length,
-                      itemBuilder: (BuildContext context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 1 * SizeConfig.heightMultiplier),
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.1),
+                context: context,
+                removeTop: true,
+                child: StreamBuilder(
+                  stream: widget.channel.stream,
+                  builder:(context, snapshot){
+                    List<ParkingSpace> _parkingSpaces =[];
+                    if (snapshot.hasData)
+                    {
+                      for (var item in jsonDecode(snapshot.data))
+                      {
+                        _parkingSpaces.add(ParkingSpace.fromMap(item));
+                      }
 
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 2.5 * SizeConfig.widthMultiplier),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Slot ${pb.parkingSpaces[index].name}',
-                                        style: GoogleFonts.rubik(
-                                            color: Colors.black,
-                                            fontSize: 2 * SizeConfig.textMultiplier,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        '${pb.parkingSpaces[index].location}',
-                                        style: GoogleFonts.rubik(
-                                          color: Colors.grey,
-                                          fontSize: 1.5 * SizeConfig.textMultiplier,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        pb.parkingSpaces[index].status ? 'AVAILABLE' : 'OCCUPIED',
-                                        style: GoogleFonts.rubik(
-                                          color:   pb.parkingSpaces[index].status ? Colors.green : ColorPalette.PrimaryColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 2.5 * SizeConfig.textMultiplier,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 9 * SizeConfig.widthMultiplier,
-                                  ),
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap:(){
-                                        if ((userBloc.uid == "" || userBloc.uid == null) && pb.parkingSpaces[index].reservedStatus == false)
-                                        {
-                                          _showDialog();
-                                        }
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical:
-                                            2 * SizeConfig.heightMultiplier),
-                                        decoration: BoxDecoration(
-                                            color: ColorPalette.PrimaryColor,
-                                            borderRadius: BorderRadius.circular(10)),
-                                        child: Text(
-                                          pb.parkingSpaces[index].reservedStatus ? 'Reserved' : 'Reserve Now',
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.rubik(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize:
-                                            1.75 * SizeConfig.textMultiplier,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      });
-                }
-              )
+                    }
+                    pb.parkingSpaces = _parkingSpaces;
+                    final ub = Provider.of<UserBloc>(context);
+                    List reserve = ub.reservedList;
+                    print(snapshot.data);
+                    return ListView.builder(
+                                        physics: ClampingScrollPhysics(),
+                                        itemCount:  _parkingSpaces.length,
+                                        itemBuilder: (BuildContext context, index) {
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 1 * SizeConfig.heightMultiplier),
+                                            child: Container(
+                                              padding: EdgeInsets.all(15),
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey.withOpacity(0.1),
+
+                                                  borderRadius: BorderRadius.circular(15)),
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 2.5 * SizeConfig.widthMultiplier),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          'Slot ${pb.parkingSpaces[index].name}',
+                                                          style: GoogleFonts.rubik(
+                                                              color: Colors.black,
+                                                              fontSize: 2 * SizeConfig.textMultiplier,
+                                                              fontWeight: FontWeight.w500),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                          '${pb.parkingSpaces[index].location}',
+                                                          style: GoogleFonts.rubik(
+                                                            color: Colors.grey,
+                                                            fontSize: 1.5 * SizeConfig.textMultiplier,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                          reserve.contains(pb.parkingSpaces[index].name)? 'OCCUPIED':  pb.parkingSpaces[index].status ? 'AVAILABLE' :'OCCUPIED' ,
+                                                          style: GoogleFonts.rubik(
+                                                            color:   reserve.contains(pb.parkingSpaces[index].name)?ColorPalette.PrimaryColor : pb.parkingSpaces[index].status ? Colors.green : ColorPalette.PrimaryColor,
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 2.5 * SizeConfig.textMultiplier,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      width: 9 * SizeConfig.widthMultiplier,
+                                                    ),
+                                                    Expanded(
+                                                      child: GestureDetector(
+                                                        onTap:(){
+                                                          if ((userBloc.uid == "" || userBloc.uid == null) && pb.parkingSpaces[index].reservedStatus == false)
+                                                          {
+                                                            _showDialog();
+                                                          }
+                                                          else if(pb.parkingSpaces[index].reservedStatus == false)
+                                                            {
+                                                              _showDialogReserved(pb.parkingSpaces[index].name, pb.parkingSpaces[index].reservedStatus);
+                                                            }
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets.symmetric(
+                                                              vertical:
+                                                              2 * SizeConfig.heightMultiplier),
+                                                          decoration: BoxDecoration(
+                                                              color: ColorPalette.PrimaryColor,
+                                                              borderRadius: BorderRadius.circular(10)),
+                                                          child: Text(
+                                                            reserve.contains(pb.parkingSpaces[index].name)? 'Reserved': pb.parkingSpaces[index].reservedStatus ? 'Reserved' : 'Reserve Now',
+                                                            textAlign: TextAlign.center,
+                                                            style: GoogleFonts.rubik(
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize:
+                                                              1.75 * SizeConfig.textMultiplier,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        });
+                  }
+                )
             ),
           ),
         ],
       ),
     );
+  }
+
+  // _buildAvailableParkingSpaceList(context) {
+  //   final pb = Provider.of<ParkingServiceBloc>(context);
+  //   final userBloc = Provider.of<UserBloc>(context);
+  //   return Padding(
+  //     padding: EdgeInsets.only(bottom: 50, left: 20, right: 20, top: 30),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Text(
+  //           'Available Parking Spaces',
+  //           style: GoogleFonts.rubik(
+  //             color: Colors.black,
+  //             fontSize: 2.5 * SizeConfig.textMultiplier,
+  //             fontWeight: FontWeight.w500,
+  //           ),
+  //         ),
+  //         SizedBox(
+  //           height: 1 * SizeConfig.heightMultiplier,
+  //         ),
+  //         Expanded(
+  //           child: MediaQuery.removePadding(
+  //             context: context,
+  //             removeTop: true,
+  //             child:ListView.builder(
+  //                 physics: ClampingScrollPhysics(),
+  //                 itemCount: pb.parkingSpaces.length,
+  //                 itemBuilder: (BuildContext context, index) {
+  //                   return Padding(
+  //                     padding: EdgeInsets.symmetric(
+  //                         vertical: 1 * SizeConfig.heightMultiplier),
+  //                     child: Container(
+  //                       padding: EdgeInsets.all(15),
+  //                       width: double.infinity,
+  //                       decoration: BoxDecoration(
+  //                           color: Colors.grey.withOpacity(0.1),
+  //
+  //                           borderRadius: BorderRadius.circular(15)),
+  //                       child: Padding(
+  //                         padding: EdgeInsets.symmetric(
+  //                             horizontal: 2.5 * SizeConfig.widthMultiplier),
+  //                         child: Row(
+  //                           crossAxisAlignment: CrossAxisAlignment.center,
+  //                           children: [
+  //                             Column(
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 Text(
+  //                                   'Slot ${pb.parkingSpaces[index].name}',
+  //                                   style: GoogleFonts.rubik(
+  //                                       color: Colors.black,
+  //                                       fontSize: 2 * SizeConfig.textMultiplier,
+  //                                       fontWeight: FontWeight.w500),
+  //                                 ),
+  //                                 SizedBox(
+  //                                   height: 5,
+  //                                 ),
+  //                                 Text(
+  //                                   '${pb.parkingSpaces[index].location}',
+  //                                   style: GoogleFonts.rubik(
+  //                                     color: Colors.grey,
+  //                                     fontSize: 1.5 * SizeConfig.textMultiplier,
+  //                                   ),
+  //                                 ),
+  //                                 SizedBox(
+  //                                   height: 5,
+  //                                 ),
+  //                                 Text(
+  //                                   pb.parkingSpaces[index].status ? 'AVAILABLE' : 'OCCUPIED',
+  //                                   style: GoogleFonts.rubik(
+  //                                     color:   pb.parkingSpaces[index].status ? Colors.green : ColorPalette.PrimaryColor,
+  //                                     fontWeight: FontWeight.bold,
+  //                                     fontSize: 2.5 * SizeConfig.textMultiplier,
+  //                                   ),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                             SizedBox(
+  //                               width: 9 * SizeConfig.widthMultiplier,
+  //                             ),
+  //                             Expanded(
+  //                               child: GestureDetector(
+  //                                 onTap:(){
+  //                                   if ((userBloc.uid == "" || userBloc.uid == null) && pb.parkingSpaces[index].reservedStatus == false)
+  //                                   {
+  //                                     _showDialog();
+  //                                   }
+  //                                   else if(pb.parkingSpaces[index].reservedStatus == false)
+  //                                     {
+  //                                       _showDialogReserved(pb.parkingSpaces[index].name);
+  //                                     }
+  //                                 },
+  //                                 child: Container(
+  //                                   padding: EdgeInsets.symmetric(
+  //                                       vertical:
+  //                                       2 * SizeConfig.heightMultiplier),
+  //                                   decoration: BoxDecoration(
+  //                                       color: ColorPalette.PrimaryColor,
+  //                                       borderRadius: BorderRadius.circular(10)),
+  //                                   child: Text(
+  //                                     pb.parkingSpaces[index].reservedStatus ? 'Reserved' : 'Reserve Now',
+  //                                     textAlign: TextAlign.center,
+  //                                     style: GoogleFonts.rubik(
+  //                                       color: Colors.white,
+  //                                       fontWeight: FontWeight.w500,
+  //                                       fontSize:
+  //                                       1.75 * SizeConfig.textMultiplier,
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   );
+  //                 })
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  _showDialogReserved(slotId, reserveStatus){
+    showDialog(context: context, builder:(BuildContext context){
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        title: Text('Reserving Confirmation', style:GoogleFonts.rubik(
+          color: ColorPalette.PrimaryColor,
+          fontWeight: FontWeight.w500,
+          fontSize:
+          1.75 * SizeConfig.textMultiplier,
+        ) ,),
+        content: Text('Your spot will be reserved for 10 minutes after you confirm.'),
+        actions: [
+          FlatButton(onPressed: (){
+            Navigator.pop(context);
+
+
+          }, child: Text('Cancel', style:GoogleFonts.rubik(
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+            fontSize:
+            1.75 * SizeConfig.textMultiplier,
+          ))),
+          FlatButton(onPressed: () async {
+              final ub = Provider.of<UserBloc>(context);
+              final pb = Provider.of<ParkingServiceBloc>(context);
+              print('Confirm reserving');
+               ub.addToUserReserve(slotId);
+               pb.updateReserveStatus(slotId, reserveStatus);
+              Navigator.pop(context);
+
+
+          }, child: Text('Confirm', style:GoogleFonts.rubik(
+            color: ColorPalette.PrimaryColor,
+            fontWeight: FontWeight.w500,
+            fontSize:
+            1.75 * SizeConfig.textMultiplier,
+          ))),
+
+        ],
+      );
+    });
   }
 
   _showDialog(){

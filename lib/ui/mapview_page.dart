@@ -1,401 +1,2236 @@
+import 'dart:convert';
+import 'dart:math';
+import 'package:capstone_parking_lot/blocs/user_bloc.dart';
+import 'package:capstone_parking_lot/helper/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 import 'package:capstone_parking_lot/helper/constants.dart';
 import 'package:capstone_parking_lot/helper/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:developer';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class MapViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        extendBody: true,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 2 * SizeConfig.heightMultiplier,),
-              Text('Map View', style: GoogleFonts.rubik(
-                color: ColorPalette.PrimaryColor,
-                fontSize:3 * SizeConfig.textMultiplier,
-                fontWeight: FontWeight.w500,
-              ), ),
-              SizedBox(height: 3 * SizeConfig.heightMultiplier,),
-              Container(
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                            color: ColorPalette.PrimaryColor,
-                            border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: RotatedBox(
-                                quarterTurns: 1,
-                                child: Image.asset('res/images/PngItem_5112270.png'),
-                              ),
-                            )
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-3',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-4',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-          height: 10 * SizeConfig.heightMultiplier,
-          width: MediaQuery.of(context).size.width/3,
-
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-              color: Colors.blue,
-              border: Border.all(color: Colors.black)
+    return MaterialApp(
+      home: SafeArea(
+        child: Scaffold(
+          backgroundColor: CupertinoColors.darkBackgroundGray,
+          // body: Container(
+          //   width: MediaQuery.of(context).size.width,
+          //   height: MediaQuery.of(context).size.height,
+          //   decoration: BoxDecoration(
+          //       gradient: LinearGradient(
+          //         colors: [
+          //           ColorPalette.PrimaryColor,
+          //           ColorPalette.SecondaryColor
+          //         ], //ColorPalette.PrimaryColor, ColorPalette.SecondaryColor],
+          //         begin: Alignment.topLeft,
+          //         end: Alignment.bottomRight,
+          //       )),
+          // backgroundColor: Colors.black,
+          body: SpaceWidget(
           ),
-          child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Image.asset('res/images/PngItem_5112270.png'),
-                ),
-              )
-          ),
-        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+        ),
+      ),
+      // ),
+    );
+  }
+}
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-6',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+class SpaceWidget extends StatefulWidget {
+  SpaceWidget({Key key}) : super(key: key);
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-7',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-          height: 10 * SizeConfig.heightMultiplier,
-          width: MediaQuery.of(context).size.width/3,
+  @override
+  _SpaceWidgetState createState() => _SpaceWidgetState();
+}
 
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-              color: ColorPalette.PrimaryColor,
-              border: Border.all(color: Colors.black)
-          ),
-          child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Image.asset('res/images/PngItem_5112270.png'),
-                ),
-              )
-          ),
-        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+class _SpaceWidgetState extends State<SpaceWidget> {
+  @override
+  Widget build(BuildContext context) {
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-9',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        ),
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        ),
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        ),
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        ),Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width/3,
-                          child: Icon(Icons.arrow_upward, color: Colors.black, size: 5 * SizeConfig.textMultiplier,),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+    return FractionallySizedBox(
+      widthFactor: 5.5,
+      heightFactor: 2.2,
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+      child: InteractiveViewer(
+        panEnabled: true, // Set it to false to prevent panning.
+        scaleEnabled: true, // Set it to false to prevent zooming.
+        // boundaryMargin: EdgeInsets.all(2500),
+        // boundaryMargin: EdgeInsets.fromLTRB(3500, 1450, 3500, 2500),
+        boundaryMargin: EdgeInsets.all(5250),
+        minScale: 0.1,
+        maxScale: 1.5,
+        // constrained: false,
+        child: Transform(
+          transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+          child: Container(
+            color: Colors.grey,
+            child: Stack(
+              overflow: Overflow.clip,
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Text("ENTRANCE      ", style: TextStyle(height: 3, fontSize: 25, fontWeight: FontWeight.bold)),),
+                Positioned(
+                  left: 1975,
+                  top: 10,
+                  height: 10.0,
+                  width: 185.0,
+                  child: buildParkingSpaceWidget(90 * 3.1415927 / 180, 2000),),
+                Positioned(
+                  left: -10,
+                  top: 160,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(90 * 3.1415927 / 180, 0),),
+                Positioned(
+                  left: -10,
+                  top: 248,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(90 * 3.1415927 / 180, 1),),
+                Positioned(
+                  left: -10,
+                  top: 336,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(90 * 3.1415927 / 180, 2),),
+                Positioned(
+                  left: 180,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 3),),
+                Positioned(
+                  left: 249,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 4),),
+                Positioned(
+                  left: 318,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 5),),
+                Positioned(
+                  left: 387,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 6),),
+                Positioned(
+                  left: 456,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 7),),
+                Positioned(
+                  left: 525,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 8),),
+                Positioned(
+                  left: 594,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 9),),
+                Positioned(
+                  left: 939,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 10),),
+                Positioned(
+                  left: 1008,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 11),),
+                Positioned(
+                  left: 1077,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 12),),
+                Positioned(
+                  left: 1146,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 13),),
+                Positioned(
+                  left: 1215,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 14),),
+                Positioned(
+                  left: 1284,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 15),),
+                Positioned(
+                  left: 1353,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 16),),
+                Positioned(
+                  left: 1422,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 17),),
+                Positioned(
+                  left: 1491,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 18),),
+                Positioned(
+                  left: 1698,
+                  top: 50,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 3000),),
+                Positioned(
+                    left: 1767,
+                    top: 50,
+                    height: 60.0,
+                    width: 88.0,
+                    child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 3000)),
+                Positioned(
+                    left: 1836,
+                    top: 50,
+                    height: 60.0,
+                    width: 88.0,
+                    child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 3000)),
+                Positioned(
+                  left: 180,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 19),),
+                Positioned(
+                  left: 249,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 20),),
+                Positioned(
+                  left: 318,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 21),),
+                Positioned(
+                  left: 387,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 22),),
+                Positioned(
+                  left: 456,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 23),),
+                Positioned(
+                  left: 525,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 24),),
+                Positioned(
+                  left: 594,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 25),),
+                Positioned(
+                  left: 663,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 26),),
+                Positioned(
+                  left: 732,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 27),),
+                Positioned(
+                  left: 801,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 28),),
+                Positioned(
+                  left: 870,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 29),),
+                Positioned(
+                  left: 939,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 30),),
+                Positioned(
+                  left: 1008,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 31),),
+                Positioned(
+                  left: 1077,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 32),),
+                Positioned(
+                  left: 1146,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 33),),
+                Positioned(
+                  left: 1215,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 34),),
+                Positioned(
+                  left: 1284,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 35),),
+                Positioned(
+                  left: 1353,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 36),),
+                Positioned(
+                  left: 1422,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 37),),
+                Positioned(
+                  left: 1491,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 38),),
+                Positioned(
+                  left: 1560,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 39),),
+                Positioned(
+                  left: 1767,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 40),),
+                Positioned(
+                  left: 1836,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 41),),
+                Positioned(
+                  left: 1905,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 42),),
+                Positioned(
+                  left: 1974,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 43),),
+                Positioned(
+                  left: 2043,
+                  top: 250,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 44),),
+                Positioned(
+                  left: 274,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 45),),
+                Positioned(
+                  left: 342,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 46),),
+                Positioned(
+                  left: 412,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 47),),
+                Positioned(
+                  left: 480,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 48),),
+                Positioned(
+                  left: 548,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 49),),
+                Positioned(
+                  left: 617,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 50),),
+                Positioned(
+                  left: 686,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 51),),
+                Positioned(
+                  left: 755,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 52),),
+                Positioned(
+                  left: 824,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 53),),
+                Positioned(
+                  left: 893,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 54),),
+                Positioned(
+                  left: 962,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 55),),
+                Positioned(
+                  left: 1032,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 56),),
+                Positioned(
+                  left: 1102,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 57),),
+                Positioned(
+                  left: 1171,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 58),),
+                Positioned(
+                  left: 1240,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 59),),
+                Positioned(
+                  left: 1309,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 60),),
+                Positioned(
+                  left: 1377,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 61),),
+                Positioned(
+                  left: 1446,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 62),),
+                Positioned(
+                  left: 1515,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 63),),
+                Positioned(
+                  left: 1722,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 64),),
+                Positioned(
+                  left: 1791,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 65),),
+                Positioned(
+                  left: 1860,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 66),),
+                Positioned(
+                  left: 1929,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 67),),
+                Positioned(
+                  left: 1998,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 68),),
+                Positioned(
+                  left: 2067,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 69),),
+                Positioned(
+                  left: 2136,
+                  top: 325,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 70),),
+                Positioned(
+                  left: 180,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 71),),
+                Positioned(
+                  left: 249,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 72),),
+                Positioned(
+                  left: 318,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 73),),
+                Positioned(
+                  left: 387,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 74),),
+                Positioned(
+                  left: 456,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 75),),
+                Positioned(
+                  left: 525,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 76),),
+                Positioned(
+                  left: 594,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 77),),
+                Positioned(
+                  left: 663,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 78),),
+                Positioned(
+                  left: 732,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 79),),
+                Positioned(
+                  left: 801,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 80),),
+                Positioned(
+                  left: 870,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 81),),
+                Positioned(
+                  left: 939,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 82),),
+                Positioned(
+                  left: 1008,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 83),),
+                Positioned(
+                  left: 1077,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 84),),
+                Positioned(
+                  left: 1146,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 85),),
+                Positioned(
+                  left: 1215,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 86),),
+                Positioned(
+                  left: 1284,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 87),),
+                Positioned(
+                  left: 1353,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 88),),
+                Positioned(
+                  left: 1422,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 89),),
+                Positioned(
+                  left: 1491,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 90),),
+                Positioned(
+                  left: 1560,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 91),),
+                Positioned(
+                  left: 1629,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 92),),
+                Positioned(
+                  left: 1698,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 93),),
+                Positioned(
+                  left: 1767,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 94),),
+                Positioned(
+                  left: 1836,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 95),),
+                Positioned(
+                  left: 1905,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 96),),
+                Positioned(
+                  left: 1974,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 97),),
+                Positioned(
+                  left: 2043,
+                  top: 525,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 98),),
+                Positioned(
+                  left: 156,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 99),),
+                Positioned(
+                  left: 225,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 100),),
+                Positioned(
+                  left: 293,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 101),),
+                Positioned(
+                  left: 362,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 102),),
+                Positioned(
+                  left: 432,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 103),),
+                Positioned(
+                  left: 500,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 104),),
+                Positioned(
+                  left: 568,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 105),),
+                Positioned(
+                  left: 637,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 106),),
+                Positioned(
+                  left: 706,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 107),),
+                Positioned(
+                  left: 775,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 108),),
+                Positioned(
+                  left: 844,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 109),),
+                Positioned(
+                  left: 913,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 110),),
+                Positioned(
+                  left: 982,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 111),),
+                Positioned(
+                  left: 1052,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 112),),
+                Positioned(
+                  left: 1122,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 113),),
+                Positioned(
+                  left: 1191,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 114),),
+                Positioned(
+                  left: 1260,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 115),),
+                Positioned(
+                  left: 1329,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 116),),
+                Positioned(
+                  left: 1397,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 117),),
+                Positioned(
+                  left: 1466,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 118),),
+                Positioned(
+                  left: 1535,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 119),),
+                Positioned(
+                  left: 1604,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 120),),
+                Positioned(
+                  left: 1673,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 121),),
+                Positioned(
+                  left: 1742,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 122),),
+                Positioned(
+                  left: 1811,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 123),),
+                Positioned(
+                  left: 1880,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 124),),
+                Positioned(
+                  left: 1949,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 125),),
+                Positioned(
+                  left: 2018,
+                  top: 600,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 126),),
+                Positioned(
+                  left: 180,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 127),),
+                Positioned(
+                  left: 249,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 128),),
+                Positioned(
+                  left: 318,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 129),),
+                Positioned(
+                  left: 387,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 130),),
+                Positioned(
+                  left: 456,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 131),),
+                Positioned(
+                  left: 525,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 132),),
+                Positioned(
+                  left: 594,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 133),),
+                Positioned(
+                  left: 663,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 134),),
+                Positioned(
+                  left: 732,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 135),),
+                Positioned(
+                  left: 801,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 136),),
+                Positioned(
+                  left: 870,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 137),),
+                Positioned(
+                  left: 939,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 138),),
+                Positioned(
+                  left: 1008,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 139),),
+                Positioned(
+                  left: 1077,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 140),),
+                Positioned(
+                  left: 1146,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 141),),
+                Positioned(
+                  left: 1215,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 142),),
+                Positioned(
+                  left: 1284,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 143),),
+                Positioned(
+                  left: 1353,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 144),),
+                Positioned(
+                  left: 1422,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 145),),
+                Positioned(
+                  left: 1491,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 146),),
+                Positioned(
+                  left: 1560,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 147),),
+                Positioned(
+                  left: 1629,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 148),),
+                Positioned(
+                  left: 1698,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 149),),
+                Positioned(
+                  left: 1767,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 150),),
+                Positioned(
+                  left: 1836,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 151),),
+                Positioned(
+                  left: 1905,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 152),),
+                Positioned(
+                  left: 1974,
+                  top: 800,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 153),),
+                Positioned(
+                  left: 225,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 154),),
+                Positioned(
+                  left: 293,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 155),),
+                Positioned(
+                  left: 362,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 156),),
+                Positioned(
+                  left: 432,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 157),),
+                Positioned(
+                  left: 500,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 158),),
+                Positioned(
+                  left: 568,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 159),),
+                Positioned(
+                  left: 637,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 160),),
+                Positioned(
+                  left: 706,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 161),),
+                Positioned(
+                  left: 775,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 162),),
+                Positioned(
+                  left: 844,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 163),),
+                Positioned(
+                  left: 913,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 164),),
+                Positioned(
+                  left: 982,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 165),),
+                Positioned(
+                  left: 1052,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 166),),
+                Positioned(
+                  left: 1122,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 167),),
+                Positioned(
+                  left: 1191,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 168),),
+                Positioned(
+                  left: 1260,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 169),),
+                Positioned(
+                  left: 1329,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 170),),
+                Positioned(
+                  left: 1397,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 171),),
+                Positioned(
+                  left: 1466,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 172),),
+                Positioned(
+                  left: 1535,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 173),),
+                Positioned(
+                  left: 1604,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 174),),
+                Positioned(
+                  left: 1673,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 175),),
+                Positioned(
+                  left: 1742,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 176),),
+                Positioned(
+                  left: 1811,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 177),),
+                Positioned(
+                  left: 1880,
+                  top: 875,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 178),),
+                Positioned(
+                  left: 180,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 179),),
+                Positioned(
+                  left: 249,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 180),),
+                Positioned(
+                  left: 318,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 181),),
+                Positioned(
+                  left: 387,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 182),),
+                Positioned(
+                  left: 456,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 183),),
+                Positioned(
+                  left: 525,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 184),),
+                Positioned(
+                  left: 594,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 185),),
+                Positioned(
+                  left: 663,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 186),),
+                Positioned(
+                  left: 732,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 187),),
+                Positioned(
+                  left: 801,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 188),),
+                Positioned(
+                  left: 870,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 189),),
+                Positioned(
+                  left: 939,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 190),),
+                Positioned(
+                  left: 1008,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 191),),
+                Positioned(
+                  left: 1077,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 192),),
+                Positioned(
+                  left: 1146,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 193),),
+                Positioned(
+                  left: 1215,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 194),),
+                Positioned(
+                  left: 1284,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 195),),
+                Positioned(
+                  left: 1353,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 196),),
+                Positioned(
+                  left: 1422,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 197),),
+                Positioned(
+                  left: 1491,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 198),),
+                Positioned(
+                  left: 1560,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 199),),
+                Positioned(
+                  left: 1629,
+                  top: 1075,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 200),),
+                Positioned(
+                  left: 204,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 201),),
+                Positioned(
+                  left: 274,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 202),),
+                Positioned(
+                  left: 342,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 203),),
+                Positioned(
+                  left: 412,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 204),),
+                Positioned(
+                  left: 480,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 205),),
+                Positioned(
+                  left: 548,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 206),),
+                Positioned(
+                  left: 617,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 207),),
+                Positioned(
+                  left: 686,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 208),),
+                Positioned(
+                  left: 755,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 209),),
+                Positioned(
+                  left: 824,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 210),),
+                Positioned(
+                  left: 893,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 211),),
+                Positioned(
+                  left: 962,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 212),),
+                Positioned(
+                  left: 1032,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 213),),
+                Positioned(
+                  left: 1102,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 214),),
+                Positioned(
+                  left: 1171,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 215),),
+                Positioned(
+                  left: 1240,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 216),),
+                Positioned(
+                  left: 1309,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 217),),
+                Positioned(
+                  left: 1377,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 218),),
+                Positioned(
+                  left: 1446,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 219),),
+                Positioned(
+                  left: 1515,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 220),),
+                Positioned(
+                  left: 1584,
+                  top: 1150,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(-59 * 3.1415927 / 180, 221),),
+                Positioned(
+                  left: 204,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 222),),
+                Positioned(
+                  left: 274,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 223),),
+                Positioned(
+                  left: 342,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 224),),
+                Positioned(
+                  left: 412,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 225),),
+                Positioned(
+                  left: 480,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 226),),
+                Positioned(
+                  left: 548,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 227),),
+                Positioned(
+                  left: 617,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 228),),
+                Positioned(
+                  left: 686,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 229),),
+                Positioned(
+                  left: 755,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 230),),
+                Positioned(
+                  left: 824,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 231),),
+                Positioned(
+                  left: 893,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 232),),
+                Positioned(
+                  left: 962,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 233),),
+                Positioned(
+                  left: 1307,
+                  top: 1350,
+                  height: 60.0,
+                  width: 88.0,
+                  child: buildParkingSpaceWidget(59 * 3.1415927 / 180, 234),),
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-11',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+                //Lines added to map
+                Positioned(
+                  left: 220,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 300,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 380,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 460,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 540,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 620,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 700,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 780,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 860,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 940,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1020,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1100,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1180,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1260,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1340,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1420,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1500,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1580,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1660,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1740,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1820,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1900,
+                  top: 175,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ),  Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+                //Lines added to map
+                Positioned(
+                  left: 220,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 300,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 380,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 460,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 540,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 620,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 700,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 780,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 860,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 940,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1020,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1100,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1180,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1260,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1340,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1420,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1500,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1580,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1660,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1740,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1820,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1900,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1980,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 2060,
+                  top: 450,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ),  Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+                //Lines added to map
+                Positioned(
+                  left: 220,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 300,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 380,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 460,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 540,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 620,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 700,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 780,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 860,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 940,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1020,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1100,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1180,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1260,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1340,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1420,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1500,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1580,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1660,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1740,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1820,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1900,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1980,
+                  top: 725,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ),  Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
+                Positioned(
+                  left: 220,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 300,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 380,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 460,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 540,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 620,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 700,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 780,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 860,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 940,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1020,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1100,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1180,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1260,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1340,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1420,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1500,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1580,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1660,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1740,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1820,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1900,
+                  top: 1000,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: ColorPalette.PrimaryColor,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Image.asset('res/images/PngItem_5112270.png'),
-                                ),
-                              )
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
 
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-16',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-17',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ), Container(
-                          height: 10 * SizeConfig.heightMultiplier,
-                          width: MediaQuery.of(context).size.width/3,
-
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
-                              color: Colors.green,
-                              border: Border.all(color: Colors.black)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'L-18',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 2 * SizeConfig.textMultiplier
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ),
-            ],
+                Positioned(
+                  left: 220,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 300,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 380,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 460,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 540,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 620,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 700,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 780,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 860,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 940,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1020,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1100,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1180,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1260,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1340,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1420,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+                Positioned(
+                  left: 1500,
+                  top: 1275,
+                  height: 10.0,
+                  width: 44.0,
+                  child: buildParkingSpaceWidget(360 * 3.1415927 / 180, 1000),),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  buildParkingSpaceWidget(angle, index){
+    final pb = Provider.of<ParkingServiceBloc>(context);
+    final ub = Provider.of<UserBloc>(context);
+    List reserve = ub.reservedList;
+    if(index == 38 || index == 39 || index == 201 || index == 202 || index == 203 || index == 204
+        || index == 222 || index == 223 || index == 224 || index == 225 || index == 3000) {
+      return  Transform.rotate(
+        angle: angle,
+        child: new DecoratedBox(
+          decoration: new BoxDecoration(
+            color: Colors.grey,
+            // color: pb.parkingSpaces[index].status ? Colors.green : ColorPalette.PrimaryColor,
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+        ),
+      );
+    }
+    if(index == 1000) {
+      return  Transform.rotate(
+        angle: angle,
+        child: new DecoratedBox(
+          decoration: new BoxDecoration(
+            color: Colors.yellow,
+            // color: pb.parkingSpaces[index].status ? Colors.green : ColorPalette.PrimaryColor,
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+        ),
+      );
+    }
+    if(index == 2000) {
+      return  Transform.rotate(
+        angle: angle,
+        child: new DecoratedBox(
+          decoration: new BoxDecoration(
+            color: Colors.black,
+            // color: pb.parkingSpaces[index].status ? Colors.green : ColorPalette.PrimaryColor,
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+        ),
+      );
+    }
+    else{
+      return  Transform.rotate(
+        angle: angle,
+        child: new DecoratedBox(
+          child: Center(child: Text((index+1).toString(), style: TextStyle(color: Colors.white, fontSize: 20),)),
+          decoration: new BoxDecoration(
+            //color: Colors.red,
+            color: reserve.contains(pb.parkingSpaces[index].name)? Colors.blue: pb.parkingSpaces[index] != null && pb.parkingSpaces[index].status ? Colors.green : ColorPalette.PrimaryColor,
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+        ),
+      );
+    }
   }
 }
