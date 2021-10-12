@@ -47,7 +47,6 @@ Refer to this repo: [vunguyen7797/SmartParkingLot-Classifier: Machine Learning C
 * Providing multiple functionalities to help parking more convenient.
 * Receiving data sent from the machine learning model via web server using Web Socket to stream real-time data.
 
-**Demo Feature**
 **1. Parking Lots Near Me** 
 * The app will suggest to users a list of parking lots nearest to the users’ current location.
 * Device GPS location is collected to calculate the distance between the current location and parking lot location data in the database.
